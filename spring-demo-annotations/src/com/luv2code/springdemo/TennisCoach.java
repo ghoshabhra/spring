@@ -3,8 +3,14 @@
  */
 package com.luv2code.springdemo;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PostMapping;
 
 /**
  * @author abhra.ghosh
@@ -12,8 +18,11 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
+//@Scope("prototype")
 public class TennisCoach implements Coach {
 
+	@Autowired
+	@Qualifier("randomFortuneService")
 	private FortuneService fortuneService;
 	
 	public TennisCoach() {
@@ -26,11 +35,11 @@ public class TennisCoach implements Coach {
 //		this.fortuneService = fortuneService;
 //	}
 	
-	@Autowired
-	public void setFortuneService(FortuneService fortuneService) {
-		System.out.println("inside");
-		this.fortuneService = fortuneService;
-	}
+//	@Autowired
+//	public void setFortuneService(FortuneService fortuneService) {
+//		System.out.println("inside");
+//		this.fortuneService = fortuneService;
+//	}
 	
 
 
@@ -44,6 +53,16 @@ public class TennisCoach implements Coach {
 	@Override
 	public String getDailyFortune() {
 		return fortuneService.getFortune();
+	}
+	
+	@PostConstruct
+	public void doMyStartupStuff() {
+		System.out.println("inside doMyStartupStuff()");
+	}
+	
+	@PreDestroy
+	public void doMyCloseUpStuff() {
+		System.out.println("inside doMyCloseUpStuff()");
 	}
 
 }
